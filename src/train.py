@@ -2,23 +2,43 @@ import os
 import joblib
 import mlflow
 import mlflow.sklearn
+import pandas as pd
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score, roc_auc_score, precision_recall_curve, auc
 
 from src.preprocess import load_data, clean_data, split_features_target, get_pipeline
 
-
 mlflow.set_tracking_uri("file:./mlruns")
-
-import os
 os.makedirs("mlruns", exist_ok=True)
 
 mlflow.set_experiment("churn_prediction_real_data")
 
-train_df, test_df = load_data(
-    "../data/customer_churn_dataset-training-master.csv",
-    "../data/customer_churn_dataset-testing-master.csv"
-)
+train_path = "../data/customer_churn_dataset-training-master.csv"
+test_path = "../data/customer_churn_dataset-testing-master.csv"
+
+if not os.path.exists(train_path):
+    print(" Dataset not found → creating dummy dataset (CI mode)")
+
+    df = pd.DataFrame({
+        "Age": [25, 40, 30, 50],
+        "Gender": ["Male", "Female", "Male", "Female"],
+        "Tenure": [10, 20, 15, 25],
+        "Usage Frequency": [5, 10, 7, 12],
+        "Support Calls": [1, 2, 0, 3],
+        "Payment Delay": [5, 3, 6, 2],
+        "Subscription Type": ["Basic", "Premium", "Standard", "Basic"],
+        "Contract Length": ["Monthly", "Annual", "Quarterly", "Monthly"],
+        "Total Spend": [200, 500, 300, 600],
+        "Last Interaction": [10, 20, 15, 25],
+        "Churn": [0, 1, 0, 1]
+    })
+
+    os.makedirs("../data", exist_ok=True)
+    df.to_csv(train_path, index=False)
+    df.to_csv(test_path, index=False)
+
+train_df, test_df = load_data(train_path, test_path)
 
 train_df = clean_data(train_df)
 test_df = clean_data(test_df)
@@ -59,4 +79,4 @@ with mlflow.start_run():
 
     mlflow.sklearn.log_model(model, "model")
 
-print("Training completed successfully")
+print(" Training completed successfully")
