@@ -1,16 +1,12 @@
 name: MLOps Pipeline
-
 on:
   push:
     branches: [ main ]
 
 jobs:
   build-and-train:
-
     runs-on: ubuntu-latest
-
     steps:
-
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -41,6 +37,7 @@ jobs:
         docker run -d -p 8000:8000 churn-mlops
         sleep 10
 
+        
     - name: Test API
       run: |
         curl -X GET http://localhost:8000/
