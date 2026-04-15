@@ -8,8 +8,10 @@ from sklearn.metrics import f1_score, roc_auc_score, precision_recall_curve, auc
 from src.preprocess import load_data, clean_data, split_features_target, get_pipeline
 
 
-mlflow.set_tracking_uri("file:///mnt/c/mlruns")
-os.makedirs("/mnt/c/mlruns", exist_ok=True)
+mlflow.set_tracking_uri("file:./mlruns")
+
+import os
+os.makedirs("mlruns", exist_ok=True)
 
 mlflow.set_experiment("churn_prediction_real_data")
 
