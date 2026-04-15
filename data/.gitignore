@@ -19,6 +19,7 @@ env/
 /data/*.parquet
 
 # Ignore DVC cache
+
 .dvc/cache/
 .dvc/tmp/
 
