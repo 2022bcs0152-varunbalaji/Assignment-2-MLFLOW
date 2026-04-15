@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: churn-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: churn
+  template:
+    metadata:
+      labels:
+        app: churn
+    spec:
+      containers:
+      - name: churn-container
+        image: churn-mlops
+        ports:
+        - containerPort: 8000

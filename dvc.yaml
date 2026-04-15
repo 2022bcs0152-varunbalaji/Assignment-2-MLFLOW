@@ -1,0 +1,10 @@
+stages:
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/customer_churn_dataset-training-master.csv
+      - data/customer_churn_dataset-testing-master.csv
+      - src/train.py
+      - src/preprocess.py
+    outs:
+      - model/model.pkl
