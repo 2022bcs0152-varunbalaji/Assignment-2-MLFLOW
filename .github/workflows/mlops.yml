@@ -26,7 +26,7 @@ jobs:
 
     - name: Train Model
       run: |
-        python src/train.py
+        PYTHONPATH=. python src/train.py
 
     - name: Check model files
       run: |
